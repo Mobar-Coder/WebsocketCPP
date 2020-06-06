@@ -12,6 +12,7 @@
 #include <thread>
 #include <atomic>
 #include <map>
+#include <vector>
 
 #include <libwebsockets.h>
 

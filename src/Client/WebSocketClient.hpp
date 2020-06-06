@@ -14,6 +14,7 @@
 #include <atomic>
 #include <map>
 #include <mutex>
+#include <vector>
 
 #include <libwebsockets.h>
 
