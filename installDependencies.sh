@@ -11,7 +11,7 @@ cd /tmp
 git clone https://github.com/warmcat/libwebsockets.git
 cd libwebsockets
 mkdir build && cd build
-cmake ..
+cmake -DLWS_IPV6=ON ..
 make -j$(nproc)
 sudo make install
 
