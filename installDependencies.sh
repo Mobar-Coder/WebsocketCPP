@@ -8,7 +8,7 @@ set -e
 # Libwebsockets
 sudo apt install libssl-dev
 cd /tmp
-git clone https://github.com/warmcat/libwebsockets.git
+git clone --depth 1 -b v4.0.15 https://github.com/warmcat/libwebsockets.git
 cd libwebsockets
 mkdir build && cd build
 cmake ..
