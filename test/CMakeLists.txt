@@ -1,4 +1,4 @@
-project(Tests)
+project(WebsocketCppTest)
 
 enable_testing()
 include_directories(..)

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(SopraNetwork VERSION 0.0.1 DESCRIPTION "Network for SoPra")
+project(WebsocketCpp VERSION 0.0.1 DESCRIPTION "Websocket library for C++")
 
 # Build options
 set(CMAKE_CXX_STANDARD 17)
@@ -43,5 +43,5 @@ install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/src/"
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/SopraNetwork
         FILES_MATCHING PATTERN "*.hpp")
 
-add_subdirectory(Tests)
-add_subdirectory(Examples)
+add_subdirectory(test)
+add_subdirectory(examples)

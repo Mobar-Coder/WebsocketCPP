@@ -6,4 +6,4 @@ before_install:
 
 script:
   - docker run -e SONAR_TOKEN=${SONAR_TOKEN} -e TRAVIS_BRANCH=${TRAVIS_BRANCH} network bash run-sonarqube.sh
-  - docker run network build/Tests/Tests --gtest_repeat=10 --gtest_shuffle --gtest_color=yes
+  - docker run network build/test/test --gtest_repeat=10 --gtest_shuffle --gtest_color=yes
