@@ -10,15 +10,9 @@ if (GTest_FOUND)
             Server/WebSocketServer.cpp
             Client/WebSocketClient.cpp)
 
-    if (USE_INSTALLED_LIB)
-        add_definitions(-DUSE_INSTALLED_LIB)
-        add_executable(${PROJECT_NAME} main.cpp ${TEST_SOURCES})
-        target_link_libraries(${PROJECT_NAME} gmock gtest pthread ${CMAKE_PROJECT_NAME})
-    else()
-        include_directories(${CMAKE_SOURCE_DIR})
-        add_executable(${PROJECT_NAME} main.cpp ${SOURCES} ${TEST_SOURCES})
-        target_link_libraries(${PROJECT_NAME} ${LIBS} gmock gtest pthread)
-    endif()
+    include_directories(${CMAKE_SOURCE_DIR})
+    add_executable(${PROJECT_NAME} main.cpp ${SOURCES} ${TEST_SOURCES})
+    target_link_libraries(${PROJECT_NAME} ${LIBS} gmock gtest pthread)
 
     add_test(
             NAME ${PROJECT_NAME}

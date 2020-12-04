@@ -19,7 +19,7 @@
 #include "Listener.hpp"
 #include "Connection.hpp"
 
-namespace websocket::network {
+namespace websocketcpp {
     /**
      * The WebSocketServer is the main class for handling of connnections, it manages the events
      * and generates an event for every new connection.

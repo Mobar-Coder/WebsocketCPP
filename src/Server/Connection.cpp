@@ -9,7 +9,7 @@
 #include "Connection.hpp"
 #include "WebSocketServer.hpp"
 
-namespace websocket::network {
+namespace websocketcpp {
     Connection::Connection(lws *socket, AsyncCallListPtr asyncCallList)
             : socket{socket}, callList{std::move(asyncCallList)}{}
 

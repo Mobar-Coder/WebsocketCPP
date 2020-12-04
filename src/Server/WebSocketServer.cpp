@@ -8,9 +8,9 @@
 #include <iostream>
 #include "WebSocketServer.hpp"
 
-static constexpr auto BUF_SIZE = 8000000;
+static constexpr auto BUF_SIZE = 4096;
 
-namespace websocket::network {
+namespace websocketcpp {
     std::map<lws_context*, WebSocketServer*> WebSocketServer::instances;
 
     WebSocketServer::WebSocketServer(uint16_t port, std::string protocolName) :

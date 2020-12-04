@@ -5,13 +5,13 @@
  * @brief Implements a simple generic listener with multiple receivers
  */
 
-#ifndef SERIALTOOLBOX_LISTENER_HPP
-#define SERIALTOOLBOX_LISTENER_HPP
+#ifndef WEBSOCKETCPP_LISTENER_HPP
+#define WEBSOCKETCPP_LISTENER_HPP
 
 #include <list>
 #include <functional>
 
-namespace websocket::util {
+namespace websocketcpp::util {
     /**
      * Implements a generic event listener with arbitrary messages.
      * @tparam Args the type(s) of the message
@@ -64,4 +64,4 @@ namespace websocket::util {
     }
 }
 
-#endif //SERIALTOOLBOX_LISTENER_HPP
+#endif

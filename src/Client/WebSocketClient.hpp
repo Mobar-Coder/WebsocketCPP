@@ -5,8 +5,8 @@
  * @brief Declares the WebSocketClient class
  */
 
-#ifndef SOPRANETWORK_WEBSOCKETCLIENT_HPP
-#define SOPRANETWORK_WEBSOCKETCLIENT_HPP
+#ifndef WEBSOCKETCPP_WEBSOCKETCLIENT_HPP
+#define WEBSOCKETCPP_WEBSOCKETCLIENT_HPP
 
 #include <string>
 #include <thread>
@@ -20,7 +20,7 @@
 
 #include "../Listener.hpp"
 
-namespace websocket::network {
+namespace websocketcpp {
     using AsyncCallList = std::pair<std::list<std::function<void()>>, std::mutex>;
 
     /**
@@ -93,4 +93,4 @@ namespace websocket::network {
 }
 
 
-#endif //SOPRANETWORK_WEBSOCKETCLIENT_HPP
+#endif

@@ -1,6 +1,5 @@
-[![Build Status](https://travis-ci.org/SoPra-Team-17/WebsocketCPP.svg?branch=master)](https://travis-ci.org/SoPra-Team-17/WebsocketCPP)
-# Network
-The C++ Websockets component.
+# WebsocketCpp
+A Websocket Library for modern C++ (17) based on libwebsockets.
 
 ## Overview
 The complete interface is similar to the Java-TCP Interface.
@@ -8,19 +7,19 @@ One major difference is that all communication is managed asynchronous
 using callback-functors.
 
 ### Client
-Only one class, `network::WebSocketClient`. Create one per connection.
+Only one class, `websocketcpp::WebSocketClient`. Create one per connection.
 
 ### Server
-For every server create an instance of `network::WebSocketServer`
+For every server create an instance of `websocketcpp::WebSocketServer`
 for every connected client, this will create 
-a new `network:Connection`.
+a new `websocketcpp::Connection`.
 
 ### Utility
 The `Listener<Args...>` class implements a generic message system 
 with arbitrary many receivers and usually one sender
 `Args...` specifies the type of message. Clients can
-subscribe by calling `Listener::operator()`, the sender can send
-a message by calling the same operator with the argument types
+subscribe by calling `Listener::subscribe`, the sender can send
+a message by calling the `operator()` with the argument types
 as specified by `Args...`.
 
 ## Installing
@@ -60,7 +59,7 @@ To be able to use the library without rebooting reload the linker cache by runni
 sudo ldconfig
 ```
 
-### Installing SopraNetwork
+### Installing WebsocketCpp
 In the root directory of the  project run cmake to generate a Makefile by running
 ```
 cmake .
@@ -76,15 +75,12 @@ sudo make install
 the library can now be included using
 
 ```
-#include <SopraNetwork/Filename>
+#include <WebsocketCpp/Filename>
 ```
 with `Filename` beeing one of the header files without their relative path.
 
 and linked using
 
 ```
--lSopraNetwork
+-lWebsocketCpp
 ```
-
-## SonarQube Analyse
-Das Analyseergebnis von SonarQube ist [hier auf SonarCloud](https://sonarcloud.io/dashboard?id=SoPra-Team-17_WebsocketCPP) zu finden.

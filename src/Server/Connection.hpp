@@ -16,7 +16,7 @@
 
 #include "Listener.hpp"
 
-namespace websocket::network {
+namespace websocketcpp {
     using AsyncCallListPtr = std::shared_ptr<std::pair<std::list<std::function<void()>>, std::mutex>>;
 
     /**

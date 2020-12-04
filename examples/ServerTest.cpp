@@ -8,29 +8,23 @@
 
 #include "../src/Server/WebSocketServer.hpp"
 
-// Or use the installed version:
-//#include <SopraNetwork/WebSocketServer.hpp>
-
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wmissing-noreturn"
-
-void newConnectionHandler(std::shared_ptr<websocket::network::Connection> connection) {
+void newConnectionHandler(const std::shared_ptr<websocketcpp::Connection> &connection) {
     std::cout << "New Connection!" << std::endl;
     connection->send("Pong");
 
-    connection->receiveListener.subscribe([connection](std::string text) {
+    connection->receiveListener.subscribe([connection](const std::string &text) {
         std::cout << "Received: " << text << std::endl;
         connection->send("Echo");
     });
 }
 
 int main() {
-    websocket::network::WebSocketServer server{8080, "http-only"};
+    websocketcpp::WebSocketServer server{8080, "http-only"};
     server.connectionListener.subscribe(newConnectionHandler);
     std::cout << "Started on port 8080" << std::endl;
-    while (true) {
-
-    }
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "EndlessLoop"
+    while (true) {}
+#pragma clang diagnostic pop
 }
 
-#pragma clang diagnostic pop

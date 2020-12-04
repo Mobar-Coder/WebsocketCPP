@@ -10,17 +10,11 @@
 
 #include "../src/Client/WebSocketClient.hpp"
 
-// Or use the installed version:
-//#include <SopraNetwork/WebSocketClient.hpp>
-
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wmissing-noreturn"
-
 
 int main() {
     using namespace std::chrono_literals;
 
-    websocket::network::WebSocketClient client{"localhost", "/", 8080, "http-only"};
+    websocketcpp::WebSocketClient client{"localhost", "/", 8080, "http-only"};
 
     auto handler = [](std::string s){
         std::cout << s << std::endl;
@@ -28,9 +22,11 @@ int main() {
 
     client.receiveListener.subscribe(handler);
 
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "EndlessLoop"
     while (true) {
         std::this_thread::sleep_for(1s);
         client.send("Test");
     }
-}
 #pragma clang diagnostic pop
+}
