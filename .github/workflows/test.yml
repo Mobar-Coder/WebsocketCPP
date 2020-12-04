@@ -49,4 +49,4 @@ jobs:
           make -j$(nproc)
       - name: Test
         run: |
-          ./build/test/WebSocketCppTest
+          ./build/test/WebsocketCppTest
