@@ -1,5 +1,5 @@
 name: Compile
-on: [pull_request]
+on: [commit]
 
 jobs:
   test:
