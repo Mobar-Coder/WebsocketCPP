@@ -1,0 +1,52 @@
+name: Compile
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        cxx: [g++-8, g++-9, g++-10, clang++-9]
+        build: [Release, Debug]
+    env:
+      CXX: ${{ matrix.cxx }}
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Install LWS
+        run: |
+          sudo apt install libssl-dev
+          git clone https://github.com/warmcat/libwebsockets.git
+          cd libwebsockets
+          CC=gcc-10 CXX=g++-10 cmake .
+          make -j$(nproc)
+          sudo make install
+          cd ..
+          rm -rf libwebsockets
+          sudo ldconfig
+      - name: Install GTest
+        run: |
+          sudo apt install libgtest-dev google-mock
+          cd /usr/src/gtest
+          sudo cmake CMakeLists.txt
+          sudo make -j$(nproc)
+          sudo cp *.a /usr/lib
+          cd /usr/src/gmock
+          sudo cmake CMakeLists.txt
+          sudo make -j$(nproc)
+          sudo cp *.a /usr/lib
+      - name: Set up Build
+        run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=${{ matrix.build }} ..
+      - name: Build
+        run: |
+          cd build
+          make -j$(nproc)
+      - name: Test
+        run: |
+          ./build/test/WebsocketCppTest
