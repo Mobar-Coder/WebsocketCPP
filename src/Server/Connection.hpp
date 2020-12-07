@@ -32,9 +32,24 @@ namespace websocketcpp {
             Connection() = delete;
 
             /**
-             * CTor: not copyable
+             * Copy CTor: not copyable
              */
             Connection(const Connection&) = delete;
+
+            /**
+             * Copy Assignment: not copyable
+             */
+            auto operator=(const Connection&) = delete;
+
+            /**
+             * Move CTor: movable
+             */
+            Connection(Connection&&) = delete;
+
+            /**
+             * Move Assignement: not copyable
+             */
+            auto operator=(Connection&&) = delete;
 
             /**
              * Listener which is called every time a new message is received.
@@ -54,6 +69,11 @@ namespace websocketcpp {
              * @return true if the connection is valid
              */
             auto isValid() const -> bool;
+
+            /**
+             * Rule of five.
+             */
+            ~Connection() = default;
         private:
             Connection(lws* socket, AsyncCallListPtr asyncCallList);
 

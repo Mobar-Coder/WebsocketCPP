@@ -11,28 +11,28 @@
 static constexpr auto BUF_SIZE = 4096;
 
 namespace websocketcpp {
-    std::map<lws_context*, WebSocketServer*> WebSocketServer::instances;
+    std::map<lws_context *, WebSocketServer *> WebSocketServer::instances;
 
     WebSocketServer::WebSocketServer(uint16_t port, std::string protocolName) :
-        finished{false},
-        protocolName{std::move(protocolName)},
-        context{nullptr, lws_context_destroy},
-        protocols{
-            {
-                this->protocolName.c_str(),
-                &WebSocketServer::globalHandler,
-                sizeof(int),
-                BUF_SIZE,
-                0,
-                nullptr,
-                BUF_SIZE 
+            finished{false},
+            protocolName{std::move(protocolName)},
+            context{nullptr, lws_context_destroy},
+            protocols{
+                    {
+                            this->protocolName.c_str(),
+                                     &WebSocketServer::globalHandler,
+                                              sizeof(int),
+                                                 BUF_SIZE,
+                                                    0,
+                                                       nullptr,
+                                                                BUF_SIZE
+                    },
+                    {
+                            nullptr, nullptr, 0, 0, 0, nullptr, 0 // Quasi null terminator
+                    }
             },
-            {
-                nullptr, nullptr, 0, 0, 0, nullptr, 0 // Quasi null terminator
-            }
-        },
-        callList{std::make_shared<std::pair<std::list<std::function<void()>>,std::mutex>>()},
-        connectionUidCount{0} {
+            callList{std::make_shared<std::pair<std::list<std::function<void()>>, std::mutex>>()},
+            connectionUidCount{0} {
 
         lws_context_creation_info contextCreationInfo{};
         contextCreationInfo.port = port;
@@ -41,7 +41,7 @@ namespace websocketcpp {
         contextCreationInfo.uid = -1;
 
         this->context = decltype(this->context){lws_create_context(&contextCreationInfo),
-                                                     lws_context_destroy};
+                                                lws_context_destroy};
 
         if (!this->context) {
             throw std::runtime_error("Could not initialize websocket");
@@ -67,46 +67,46 @@ namespace websocketcpp {
         if (wsi != nullptr) {
             std::vector<unsigned char> buf;
             buf.resize(text.length() + LWS_PRE);
-            for (std::size_t c=0; c<text.size(); ++c) {
+            for (std::size_t c = 0; c < text.size(); ++c) {
                 buf[c + LWS_PRE] = text.at(c);
             }
             lws_write(wsi, buf.data() + LWS_PRE, text.length(), LWS_WRITE_TEXT);
         }
     }
 
-    void WebSocketServer::broadcast(const std::string& text) {
+    void WebSocketServer::broadcast(const std::string &text) {
         for (const auto &connection : this->connections) {
             connection.second->send(text);
         }
     }
 
-    int WebSocketServer::handler(lws *websocket, lws_callback_reasons reasons, int *userData, const std::string& text) {
+    int WebSocketServer::handler(lws *websocket, lws_callback_reasons reasons, int *id, const std::string &text) {
         switch (reasons) {
             case LWS_CALLBACK_ESTABLISHED: {
-                *userData = ++connectionUidCount;
+                *id = ++connectionUidCount;
                 // Yes i create a raw pointer and pass it to the shared_ptr ctor instead of using
                 // make_shared, this is necessary because the Connector CTor is private.
                 auto connection = std::shared_ptr<Connection>{new Connection{websocket, this->callList}};
-                connections.emplace(std::make_pair(*userData, connection));
+                connections.emplace(std::make_pair(*id, connection));
                 this->connectionListener(connection);
                 break;
             }
             case LWS_CALLBACK_CLOSED: {
-                auto it = connections.find(*userData);
+                auto it = connections.find(*id);
                 if (it != connections.end()) {
                     it->second->socket = nullptr;
                     this->closeListener(it->second);
-                    connections.erase(*userData);
+                    connections.erase(*id);
                 }
                 break;
             }
             case LWS_CALLBACK_RECEIVE: {
-                auto it = connections.find(*userData);
+                auto it = connections.find(*id);
                 if (it != connections.end()) {
                     const std::size_t remaining = lws_remaining_packet_payload(websocket);
-                    const bool isFinalFragment = lws_is_final_fragment(websocket);
+                    const bool isFinalFragment = lws_is_final_fragment(websocket) != 0;
 
-                    it->second->receiveAndDefragment(text, !remaining && isFinalFragment);
+                    it->second->receiveAndDefragment(text, (remaining == 0) && isFinalFragment);
                 }
                 break;
             }
@@ -125,7 +125,7 @@ namespace websocketcpp {
 
     int WebSocketServer::globalHandler(lws *websocket, lws_callback_reasons reasons, void *userData, void *data,
                                        size_t len) {
-        auto *id = static_cast<int*>(userData);
+        auto *id = static_cast<int *>(userData);
         std::string text{static_cast<char *>(data), len};
         auto *ctx = lws_get_context(websocket);
         auto instance = instances.find(ctx);
