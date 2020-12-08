@@ -14,7 +14,7 @@ namespace websocketcpp {
             : socket{socket}, callList{std::move(asyncCallList)}{}
 
     void Connection::send(const std::string& text) {
-        if (!this->socket) {
+        if (isValid()) {
             throw std::runtime_error("Client already disconnected");
         }
         std::lock_guard<std::mutex> lockGuard{callList->second};
@@ -22,7 +22,7 @@ namespace websocketcpp {
     }
 
     auto Connection::isValid() const -> bool {
-        return !this->socket;
+        return this->socket != nullptr;
     }
 
     void Connection::receiveAndDefragment(const std::string &message, bool isLastMessage) {
