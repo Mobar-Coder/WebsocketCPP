@@ -63,7 +63,7 @@ namespace websocketcpp {
         clientConnectInfo.local_protocol_name = this->protocolName.c_str();
         clientConnectInfo.pwsi = &this->wsi;
 
-        if (!lws_client_connect_via_info(&clientConnectInfo)) {
+        if (nullptr == lws_client_connect_via_info(&clientConnectInfo)) {
             throw std::runtime_error("Could not connect!");
         }
 
@@ -124,7 +124,7 @@ namespace websocketcpp {
         return 0;
     }
 
-    int WebSocketClient::globalHandler(lws *websocket, lws_callback_reasons reasons, void *, void *data,
+    int WebSocketClient::globalHandler(lws *websocket, lws_callback_reasons reasons, void *, void *data, // NOLINT
                                        std::size_t len) {
         std::string text{static_cast<char *>(data), len};
         auto *ctx = lws_get_context(websocket);
@@ -142,7 +142,7 @@ namespace websocketcpp {
             for (std::size_t c = 0; c < text.size(); ++c) {
                 buf[c + LWS_PRE] = text.at(c);
             }
-            lws_write(wsi, buf.data() + LWS_PRE, text.length(), LWS_WRITE_TEXT);
+            lws_write(wsi, buf.data() + LWS_PRE, text.length(), LWS_WRITE_TEXT); // NOLINT
         }
     }
 

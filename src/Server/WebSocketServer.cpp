@@ -70,7 +70,7 @@ namespace websocketcpp {
             for (std::size_t c = 0; c < text.size(); ++c) {
                 buf[c + LWS_PRE] = text.at(c);
             }
-            lws_write(wsi, buf.data() + LWS_PRE, text.length(), LWS_WRITE_TEXT);
+            lws_write(wsi, buf.data() + LWS_PRE, text.length(), LWS_WRITE_TEXT); // NOLINT
         }
     }
 

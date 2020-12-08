@@ -107,8 +107,7 @@ namespace websocketcpp {
 
             std::stringstream receiveStream;
 
-            static int globalHandler(lws *websocket, lws_callback_reasons reasons, void *, void *data,
-                                     std::size_t len);
+            static int globalHandler(lws *websocket, lws_callback_reasons reasons, void *, void *data, std::size_t len); // NOLINT
 
             static void sendImpl(const std::string &text, lws *wsi);
 
