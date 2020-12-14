@@ -16,6 +16,8 @@ else ()
     message("Building for release")
 endif ()
 
+option(WebsocketCppBuildStatic "Build as static instead of shared library, disables the option to install the lib")
+
 # Building
 
 set(SOURCES
@@ -26,7 +28,11 @@ set(SOURCES
 set(LIBS websockets pthread)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
-add_library(${PROJECT_NAME} SHARED ${SOURCES})
+if (WebsocketCppBuildStatic)
+    add_library(${PROJECT_NAME} STATIC ${SOURCES})
+else()
+    add_library(${PROJECT_NAME} SHARED ${SOURCES})
+endif()
 target_link_libraries(${PROJECT_NAME} ${LIBS})
 
 target_include_directories(${PROJECT_NAME}
@@ -34,14 +40,16 @@ target_include_directories(${PROJECT_NAME}
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>)
 
 # Installation via make install
-include(GNUInstallDirs)
-set_target_properties(${PROJECT_NAME} PROPERTIES
-        VERSION ${PROJECT_VERSION}
-        SOVERSION 1)
-install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_LIBDIR})
-install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/src/"
-        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/WebsocketCpp
-        FILES_MATCHING PATTERN "*.hpp")
+if (NOT WebsocketCppBuildStatic)
+    include(GNUInstallDirs)
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+            VERSION ${PROJECT_VERSION}
+            SOVERSION 1)
+    install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_LIBDIR})
+    install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/src/"
+            DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/WebsocketCpp
+            FILES_MATCHING PATTERN "*.hpp")
+endif()
 
 add_subdirectory(test)
 add_subdirectory(examples)
